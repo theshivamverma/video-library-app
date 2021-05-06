@@ -1,1 +1,27 @@
+.video-title {
+  font-size: 0.9rem !important;
+}
 
+.App{
+    padding: 0 0.5rem;
+    padding-top: 100px;
+}
+
+@media (min-width: 768px) {
+  .App {
+    padding: 2rem;
+    padding-left: calc(25% + 2rem) !important;
+  }
+
+  .video-card {
+    width: 300px;
+  }
+
+  .modal-container {
+    min-width: 20% !important;
+  }
+
+  .nav{
+      display: none !important;
+  }
+}
