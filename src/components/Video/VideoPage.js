@@ -3,7 +3,7 @@
 import { useParams, useLocation } from "react-router-dom";
 import ReactPlayer from "react-player/youtube";
 import { useEffect, useState } from "react";
-import { usePlaylist } from "../components/playlist";
+import { usePlaylist } from "../playlist";
 
 export default function VideoPage() {
   const { videoId } = useParams();
@@ -107,14 +107,14 @@ export default function VideoPage() {
             className="flex"
             style={{ display: `${createInput ? "block" : "none"}` }}
           >
-            <label class="inputgroup">
+            <label className="inputgroup">
               <input
-                class="input-textbox focus-blue"
+                className="input-textbox focus-blue"
                 placeholder=" "
                 value={playlistName}
                 onChange={(e) => setPlaylistName(e.target.value)}
               />
-              <span class="input-label">Playlist name</span>
+              <span className="input-label">Playlist name</span>
             </label>
             <div className="flex justify-sb">
               <button

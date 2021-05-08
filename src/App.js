@@ -1,11 +1,9 @@
 import { useState } from "react";
 import { Routes, Route } from "react-router-dom"
 import LeftNavbar from "./components/LeftNavbar/LeftNavbar";
-import { Playlist } from "./components/playlist";
-import PlaylistDetail from "./components/playlist/PlaylistDetail";
+import { Playlist, PlaylistDetail } from "./components/playlist";
 import Topnavbar from "./components/Topnavbar/Topnavbar";
-import VideoList from "./components/VideoList";
-import VideoPage from "./components/VideoPage";
+import { VideoPage, VideoList } from "./components/Video"
 
 function App() {
   const [leftMenu, setLeftMenu] = useState(false)

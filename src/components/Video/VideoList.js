@@ -1,14 +1,4 @@
-import VideoCard from "./VideoCard";
-
-
-// const videoIds = [
-//   "0P3Gt-60yLc",
-//   "AVM4J0qvdKw",
-//   "5eIhSCFnvPc",
-//   "PJWemSzExXs",
-//   "7YbfDiCC-qk",
-//   "jJPMnTXl63E",
-// ];
+import {VideoCard} from "../Video";
 
 const videoList = [
   {
@@ -42,8 +32,15 @@ const videoList = [
 
 export default function VideoList() {
   return (
-    <div class="grid-container web-three mob-two">
-     { videoList.map(({ title, id}) => <VideoCard videoId={id} title={title} playlistCard={false} playlistName={""} />)}
+    <div className="grid-container web-three mob-two">
+      {videoList.map(({ title, id }) => (
+        <VideoCard
+          videoId={id}
+          title={title}
+          playlistCard={false}
+          playlistName={""}
+        />
+      ))}
     </div>
-  )
+  );
 }

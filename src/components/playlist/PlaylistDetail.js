@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom"
 import { usePlaylist } from "../playlist"
-import VideoCard from "../VideoCard";
+import { VideoCard } from "../Video"
 
 export default function PlaylistDetail(){
 
