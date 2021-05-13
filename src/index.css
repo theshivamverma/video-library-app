@@ -2,15 +2,21 @@
   font-size: 0.9rem !important;
 }
 
-.App{
-    padding: 0 0.5rem;
-    padding-top: 100px;
+.App {
+  padding: 0 0.5rem;
+  padding-top: 100px;
+  width: 100%;
+}
+
+.nav {
+  z-index: 99;
 }
 
 @media (min-width: 768px) {
   .App {
     padding: 2rem;
-    padding-left: calc(25% + 2rem) !important;
+    padding-top: 80px;
+    padding-left: calc(20% + 2rem) !important;
   }
 
   .video-card {
@@ -21,7 +27,22 @@
     min-width: 20% !important;
   }
 
-  .nav{
-      display: none !important;
+  .nav {
+    padding: 0 3rem;
+  }
+
+  .leftfixed-nav {
+    padding-top: 90px;
+    width: 20%;
+  }
+
+  .top-element{
+    display: none !important;
+  }
+  .btn-menu{
+    display: none;
+  }
+  .login-container{
+    width: 35%;
   }
 }

@@ -6,7 +6,7 @@ export default function LeftNavbar({ leftMenu, setLeftMenu }) {
       className={leftMenu ? "leftfixed-nav active p-1" : "leftfixed-nav p-1"}
     >
       <div className="top-element">
-        <h3 className="uppercase letter-spaced">Indie-Songs</h3>
+        <h3 className="uppercase letter-spaced">Menu</h3>
         <button
           className="m-0-05 btn btn-icon"
           onClick={() => setLeftMenu(false)}

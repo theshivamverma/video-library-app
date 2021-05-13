@@ -7,7 +7,7 @@ import { usePlaylist } from "../playlist";
 
 export default function VideoPage() {
   const { videoId } = useParams();
-  const { title } = useLocation().state;
+  const { video } = useLocation().state;
   const { playlist, playlistDispatch } = usePlaylist();
   const [modalActive, setModalActive] = useState(false);
   const [createInput, setCreateInput] = useState(false);
@@ -63,7 +63,7 @@ export default function VideoPage() {
         height={"600px"}
       />
       <div className="flex justify-sb align-center p-1">
-        <h1 className="video-title medium mt-1">{title}</h1>
+        <h1 className="video-title medium mt-1">{video.snippet.title}</h1>
         <i
           className="fas fa-indent icon-med btn-icon"
           onClick={() => setModalActive(true)}

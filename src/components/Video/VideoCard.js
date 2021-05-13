@@ -2,8 +2,7 @@ import { Link } from "react-router-dom";
 import { usePlaylist } from "../playlist";
 
 export default function VideoCard({
-  videoId,
-  title,
+  video,
   playlistCard,
   playlistName,
 }) {
@@ -11,17 +10,17 @@ export default function VideoCard({
 
   return (
     <div className="box-shadow-down video-card p-1">
-      <Link to={`/video/${videoId}`} state={{ title }}>
+      <Link to={`/video/${video.id}`} state={{ video }}>
         <img
           className="responsive-image"
-          key={videoId}
+          key={video.id}
           alt=""
-          src={`https://img.youtube.com/vi/${videoId}/hqdefault.jpg`}
+          src={video.snippet.thumbnails.high.url}
         />
       </Link>
       <div className="flex justify-sb align-center mt-1">
-        <Link to={`/video/${videoId}`} state={{ title }}>
-          <h3 className="video-title medium font-size-sm">{title}</h3>
+        <Link to={`/video/${video.id}`} state={{ video }}>
+          <h3 className="video-title medium font-size-sm">{video.snippet.title}</h3>
         </Link>
         <button
           className="btn btn-icon ml-1"
@@ -29,12 +28,16 @@ export default function VideoCard({
           onClick={() =>
             playlistDispatch({
               type: "REMOVE_VIDEO_FROM_PLAYLIST",
-              payload: { playlistName, id: videoId },
+              payload: { playlistName, id: video.id },
             })
           }
         >
           <icon className="fas fa-trash icon-med colorAlertRed"></icon>
         </button>
+      </div>
+      <div className="video-details mt-1">
+        <p class="medium font-size-xsm">{video.snippet.channelTitle}</p>
+        <p class="medium font-size-xsm">{video.statistics.viewCount}</p>
       </div>
     </div>
   );
