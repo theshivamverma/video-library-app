@@ -2,13 +2,16 @@ import { useState } from "react"
 import { Link, useLocation, useNavigate } from "react-router-dom"
 import { useAuth } from "../auth"
 import { useToast } from "../utilities/Toast"
+import { usePlaylist } from "../playlist"
 
 export default function Login() {
   const [userName, setUsername] = useState("")
   const [password, setPassword] = useState("")
   const [errorUsername, setErrorUsername] = useState("")
   const [errorPassword, setErrorPassword] = useState("")
-  const { login, loginUser } = useAuth();
+
+  const { setPlaylistsData } = usePlaylist()
+  const { login, loginUser, user } = useAuth();
   const { toastDispatch } = useToast();
 
   const { state } = useLocation();
@@ -39,6 +42,7 @@ export default function Login() {
     if(errorPassword === "" && errorUsername === ""){
       const { success } = await loginUser(userName, password);
       if (success) {
+        setPlaylistsData(user)
         toastDispatch({ type: "SUCCESS_TOAST", payload: "Login successful" });
       } else {
         toastDispatch({ type: "ERROR_TOAST", payload: "Wrong credentials" });

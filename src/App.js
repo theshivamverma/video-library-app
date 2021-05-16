@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Routes, Route } from "react-router-dom"
 import LeftNavbar from "./components/LeftNavbar/LeftNavbar";
 import {Login, Register} from "./components/login/";
-import { Playlist, PlaylistDetail } from "./components/playlist";
+import { Playlist, PlaylistDetail, Watchlater } from "./components/playlist";
 import { Toast } from "./components/utilities/Toast";
 import Topnavbar from "./components/utilities/Topnavbar/Topnavbar";
 import { VideoPage, VideoList } from "./components/Video"
@@ -21,7 +21,8 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/video/:videoId" element={<VideoPage />} />
           <Route path="/playlist" element={<Playlist />} />
-          <Route path="/playlist/:playlistName" element={<PlaylistDetail />} />
+          <Route path="/watchlater" element={<Watchlater />} />
+          <Route path="/playlist/:playlistId" element={<PlaylistDetail />} />
         </Routes>
         <Toast />
       </div>

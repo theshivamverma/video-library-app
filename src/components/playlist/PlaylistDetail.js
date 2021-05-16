@@ -1,32 +1,36 @@
 import { useParams } from "react-router-dom"
 import { usePlaylist } from "../playlist"
-import { VideoCard } from "../Video"
+import { VideoCard, useVideo } from "../Video"
 
 export default function PlaylistDetail(){
 
-    const { playlistName } = useParams()
+    const { playlistId } = useParams()
 
     const { playlist } = usePlaylist()
+    const { videoData } = useVideo()
 
-    const displayPlaylist = playlist.find(displayPlaylist => displayPlaylist.name === playlistName)
-
+    console.log(playlistId)
+    console.log(playlist)
+    const displayPlaylist = playlist.find(playlistItem => playlistItem._id === playlistId)
+console.log(displayPlaylist)
     return (
       <div>
         <h1 className="medium font-size-l">
           {displayPlaylist.name}({displayPlaylist.videos.length})
         </h1>
-        {displayPlaylist.videos.map((video) => {
-          return (
-            <div className="grid-container web-three mob-two mt-1">
-              <VideoCard
-                videoId={video.id}
-                title={video.title}
-                playlistCard={true}
-                playlistName={displayPlaylist.name}
-              />
-            </div>
-          );
-        })}
+        <div className="grid-container web-three mob-two mt-1">
+          {videoData
+            .filter((video) => displayPlaylist.videos.includes(video.id))
+            .map((video) => {
+              return (
+                <VideoCard
+                  video={video}
+                  playlistCard={true}
+                  playlistId={displayPlaylist._id}
+                />
+              );
+            })}
+        </div>
       </div>
     );
 }

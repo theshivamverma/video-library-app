@@ -22,7 +22,7 @@ export default function Topnavbar({ setLeftMenu }) {
           </Link>
         </> : 
         <>
-          <p className="medium font-size-sm">Hi {user.username} !</p>
+          <p className="medium font-size-sm">Hi {user && user.username} !</p>
           <button className="btn btn-link" onClick={() => userLogout()}>
             Logout
           </button>

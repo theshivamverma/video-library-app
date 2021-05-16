@@ -30,6 +30,14 @@ export default function LeftNavbar({ leftMenu, setLeftMenu }) {
           Playlist
         </button>
       </Link>
+      <Link to="/watchlater">
+        <button
+          className="btn btn-block btn-link box-shadow-down mt-1"
+          onClick={() => setLeftMenu(false)}
+        >
+          Watchlater
+        </button>
+      </Link>
     </nav>
   );
 }

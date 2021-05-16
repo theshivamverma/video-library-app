@@ -1,36 +1,67 @@
-export default function playlistReducer(state, action){
-    switch(action.type){
-        case "CREATE_NEW_PLAYLIST": 
+export default function playlistReducer(state, action) {
+    console.log(action)
+  switch (action.type) {
+    case "LOAD_PLAYLIST_DATA":
+      return {
+        ...state,
+        playlist: action.payload,
+      };
+    case "LOAD_WATCH_LATER_DATA": 
+      return {
+        ...state,
+        watchlater: action.payload,
+      }
+    case "CREATE_NEW_PLAYLIST":
+      return {
+        ...state,
+        playlist: state.playlist.concat({
+          name: action.payload.name,
+          _id: action.payload._id,
+          videos: [],
+        }),
+      };
+    case "ADD_VIDEO_TO_PLAYLIST":
+      return {
+        ...state,
+        playlist: state.playlist.map((playlistItem) => {
+          if (playlistItem._id === action.payload.playlistId) {
             return {
-                ...state,
-                playlist: state.playlist.concat({ name: action.payload, videos: [] })
-            }
-        case "ADD_VIDEO_TO_PLAYLIST":
+              ...playlistItem,
+              videos: playlistItem.videos.concat(action.payload.videoId),
+            };
+          } else return playlistItem;
+        }),
+      };
+    case "REMOVE_VIDEO_FROM_PLAYLIST":
+      return {
+        ...state,
+        playlist: state.playlist.map((playlistItem) => {
+          if (playlistItem._id === action.payload.playlistId) {
             return {
-                ...state,
-                playlist: state.playlist.map(playlistItem => {
-                    if(playlistItem.name === action.payload.playlistName){
-                        return {...playlistItem, videos: playlistItem.videos.concat(action.payload.video)}
-                    }
-                    else return playlistItem
-                })
-            }
-        case "REMOVE_VIDEO_FROM_PLAYLIST": 
-            return {
-                ...state,
-                playlist: state.playlist.map(playlistItem => {
-                    if(playlistItem.name === action.payload.playlistName){
-                        return({...playlistItem, videos: playlistItem.videos.filter(video => video.id !== action.payload.id)})
-                    }
-                    else return playlistItem
-                })
-            }
-        case "REMOVE_PLAYLIST": 
-            return {
-                ...state,
-                playlist: state.playlist.filter(playlistItem => playlistItem.name !== action.payload.playlistName)
-            }
-        default:
-            return;
-    }
+              ...playlistItem,
+              videos: playlistItem.videos.filter(
+                (video) => video !== action.payload.videoId
+              ),
+            };
+          } else return playlistItem;
+        }),
+      };
+    case "REMOVE_PLAYLIST":
+      return {
+        ...state,
+        playlist: state.playlist.filter((playlistItem) => playlistItem._id !== action.payload.playlistId),
+      };
+    case "ADD_TO_WATCH_LATER":
+      return {
+        ...state,
+        watchlater: state.watchlater.concat(action.payload)
+      }
+    case "REMOVE_FROM_WATCH_LATER":
+      return {
+        ...state,
+        watchlater: state.watchlater.filter(videoId => videoId !== action.payload)
+      }
+    default:
+      return;
+  }
 }

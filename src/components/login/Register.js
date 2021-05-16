@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../auth";
 import { useToast } from "../utilities/Toast";
+import { usePlaylist } from "../playlist"
 import {
   validateEmail,
   validateName,
@@ -23,6 +24,7 @@ export default function Register() {
 
   const { login, registerUser } = useAuth();
   const { toastDispatch } = useToast();
+  const { createPlaylist } = usePlaylist()
 
   const navigate = useNavigate();
 
@@ -119,8 +121,9 @@ export default function Register() {
       password &&
       name
     ) {
-      const { success } = await registerUser(name, email, username, password);
+      const { id, success } = await registerUser(name, email, username, password);
       if (success) {
+        createPlaylist(id, "My playlist")
         toastDispatch({ type: "SUCCESS_TOAST", payload: "Signup successfull" });
       } else {
         toastDispatch({ type: "ERROR_TOAST", payload: "Error signing up" });

@@ -5,7 +5,7 @@ const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
   const [login, setLogin] = useState(false);
-  const [user, setUser] = useState({});
+  const [user, setUser] = useState(undefined);
 
   useEffect(() => {
     if (localStorage.getItem("vlib_login")) {

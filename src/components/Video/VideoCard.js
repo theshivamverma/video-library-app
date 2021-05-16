@@ -4,9 +4,9 @@ import { usePlaylist } from "../playlist";
 export default function VideoCard({
   video,
   playlistCard,
-  playlistName,
+  playlistId
 }) {
-  const { playlistDispatch } = usePlaylist();
+  const { removeVideoFromPlaylist } = usePlaylist();
 
   return (
     <div className="box-shadow-down video-card p-1">
@@ -26,10 +26,7 @@ export default function VideoCard({
           className="btn btn-icon ml-1"
           style={{ display: `${playlistCard ? "initial" : "none"}` }}
           onClick={() =>
-            playlistDispatch({
-              type: "REMOVE_VIDEO_FROM_PLAYLIST",
-              payload: { playlistName, id: video.id },
-            })
+            removeVideoFromPlaylist(video.id, playlistId)
           }
         >
           <icon className="fas fa-trash icon-med colorAlertRed"></icon>
