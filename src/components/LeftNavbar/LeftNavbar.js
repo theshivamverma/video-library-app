@@ -1,6 +1,10 @@
 import { Link } from "react-router-dom";
 
+import { useAuth } from "../auth";
+
 export default function LeftNavbar({ leftMenu, setLeftMenu }) {
+  const { login, userLogout } = useAuth();
+
   return (
     <nav
       className={leftMenu ? "leftfixed-nav active p-1" : "leftfixed-nav p-1"}
@@ -38,6 +42,26 @@ export default function LeftNavbar({ leftMenu, setLeftMenu }) {
           Watchlater
         </button>
       </Link>
+      {login ? (
+        <button
+          className="mobile-logoutbtn btn btn-block btn-link box-shadow-down mt-1"
+          onClick={() => {
+            userLogout();
+            setLeftMenu(false);
+          }}
+        >
+          Logout
+        </button>
+      ) : (
+        <Link to="/login">
+          <button 
+          className="mobile-logoutbtn btn btn-block btn-link box-shadow-down mt-1"
+          onClick={() => setLeftMenu(false)}
+          >
+            Login / Register
+          </button>
+        </Link>
+      )}
     </nav>
   );
 }

@@ -5,6 +5,7 @@ import ReactPlayer from "react-player/youtube";
 import { useEffect, useState } from "react";
 import { usePlaylist } from "../playlist";
 import { useAuth } from "../auth";
+import { useToast } from "../utilities/Toast"
 
 export default function VideoPage() {
   const { videoId } = useParams();
@@ -21,6 +22,7 @@ export default function VideoPage() {
     removeFromWatchLater
   } = usePlaylist();
   const { user, login } = useAuth();
+  const { toastDispatch } = useToast()
 
   useEffect(() => {
     if (user && login) {
@@ -45,12 +47,16 @@ export default function VideoPage() {
   }
 
   function handleWatchLaterClick(){
-    if(watchlater.includes(videoId)){
-      removeFromWatchLater(videoId, user._id)
-      playlistDispatch({ type: "REMOVE_FROM_WATCH_LATER", payload: videoId })
+    if(login){
+      if (watchlater.includes(videoId)) {
+        removeFromWatchLater(videoId, user._id);
+        playlistDispatch({ type: "REMOVE_FROM_WATCH_LATER", payload: videoId });
+      } else {
+        addToWatchLater(videoId, user._id);
+        playlistDispatch({ type: "ADD_TO_WATCH_LATER", payload: videoId });
+      }
     }else{
-      addToWatchLater(videoId, user._id);
-      playlistDispatch({ type: "ADD_TO_WATCH_LATER", payload: videoId });
+      toastDispatch({ type: "INFO_TOAST", payload: "You need to login first" });
     }
   }
 
@@ -61,10 +67,10 @@ export default function VideoPage() {
         url={`https://www.youtube.com/watch?v=${videoId}`}
         playing={true}
         width={"100%"}
-        height={"600px"}
+        height={"500px"}
       />
-      <div className="flex justify-sb align-center p-1">
-        <h1 className="video-title medium mt-1">{video.snippet.title}</h1>
+      <div className="flex justify-sb align-center p-1 flex-wrap">
+        <h1 className="video-page-title medium mt-1">{video.snippet.title}</h1>
         <i
           className="fas fa-clock icon-med btn-icon"
           style={{
@@ -76,7 +82,14 @@ export default function VideoPage() {
         ></i>
         <i
           className="fas fa-indent icon-med btn-icon"
-          onClick={() => setModalActive(true)}
+          onClick={() => {
+            login
+              ? setModalActive(true)
+              : toastDispatch({
+                  type: "INFO_TOAST",
+                  payload: "You need to login first",
+                });
+          }}
         ></i>
       </div>
       <div className={modalActive ? "modal-overlay active" : "modal-overlay"}>

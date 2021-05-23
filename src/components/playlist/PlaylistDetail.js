@@ -18,7 +18,7 @@ console.log(displayPlaylist)
         <h1 className="medium font-size-l">
           {displayPlaylist.name}({displayPlaylist.videos.length})
         </h1>
-        <div className="grid-container web-three mob-two mt-1">
+        <div className="grid-container web-three mob-one mt-1">
           {videoData
             .filter((video) => displayPlaylist.videos.includes(video.id))
             .map((video) => {

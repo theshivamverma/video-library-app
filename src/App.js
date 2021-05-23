@@ -6,6 +6,7 @@ import { Playlist, PlaylistDetail, Watchlater } from "./components/playlist";
 import { Toast } from "./components/utilities/Toast";
 import Topnavbar from "./components/utilities/Topnavbar/Topnavbar";
 import { VideoPage, VideoList } from "./components/Video"
+import { PrivateRoute } from "./components/auth"
 
 function App() {
   const [leftMenu, setLeftMenu] = useState(false)
@@ -20,9 +21,12 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/video/:videoId" element={<VideoPage />} />
-          <Route path="/playlist" element={<Playlist />} />
-          <Route path="/watchlater" element={<Watchlater />} />
-          <Route path="/playlist/:playlistId" element={<PlaylistDetail />} />
+          <PrivateRoute path="/playlist" element={<Playlist />} />
+          <PrivateRoute path="/watchlater" element={<Watchlater />} />
+          <PrivateRoute
+            path="/playlist/:playlistId"
+            element={<PlaylistDetail />}
+          />
         </Routes>
         <Toast />
       </div>

@@ -3,11 +3,13 @@ import { useAuth } from "../../auth"
 
 export default function Topnavbar({ setLeftMenu }) {
 
-  const { login, user, userLogout } = useAuth()
+  const { login,  userLogout } = useAuth()
 
   return (
     <nav className="nav top-fixed p-1 box-shadow-down">
-      <h1 className="font-size-m">Indie Songs</h1>
+      <Link to="/">
+        <h1 className="font-size-m">Indie Songs</h1>
+      </Link>
       <button
         className="btn btn-icon btn-menu"
         onClick={() => setLeftMenu(true)}
@@ -15,18 +17,20 @@ export default function Topnavbar({ setLeftMenu }) {
         <i className="fas fa-bars icon-med"></i>
       </button>
       <div class="profile">
-       { !login ?
-        <>
-          <Link to="/login">
-            <button className="btn btn-link">Login / Register</button>
-          </Link>
-        </> : 
-        <>
-          <p className="medium font-size-sm">Hi {user && user.username} !</p>
-          <button className="btn btn-link" onClick={() => userLogout()}>
-            Logout
-          </button>
-        </>}
+        {!login ? (
+          <>
+            <Link to="/login">
+              <button className="btn btn-link">Login / Register</button>
+            </Link>
+          </>
+        ) : (
+          <div classname="">
+            {/* <p className="medium font-size-sm">Hi {user && user.username} !</p> */}
+            <button className="btn btn-link" onClick={() => userLogout()}>
+              Logout
+            </button>
+          </div>
+        )}
       </div>
     </nav>
   );

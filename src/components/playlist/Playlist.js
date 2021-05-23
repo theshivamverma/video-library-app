@@ -1,13 +1,16 @@
-import { useEffect } from "react"
+/* eslint-disable */
+
+import { useEffect } from "react";
 import { usePlaylist } from "../playlist";
-import { VideoCard, useVideo } from "../Video"
+import { VideoCard, useVideo } from "../Video";
 import { Link } from "react-router-dom";
-import { useAuth } from "../auth"
+import { useAuth } from "../auth";
 
 export default function Playlist() {
   const { videoData } = useVideo();
-  const { login, user } = useAuth()
-  const { playlist, playlistDispatch, setPlaylistsData, deletePlaylist  } = usePlaylist();
+  const { login, user } = useAuth();
+  const { playlist, playlistDispatch, setPlaylistsData, deletePlaylist } =
+    usePlaylist();
 
   useEffect(() => {
     if (user && login) {
@@ -18,7 +21,7 @@ export default function Playlist() {
   return (
     <div>
       {playlist.map((playlistItem, index) => {
-        console.log({playlistItem})
+        console.log({ playlistItem });
         return (
           <>
             <div>
@@ -44,7 +47,7 @@ export default function Playlist() {
                   <icon className="fas fa-trash icon-med colorAlertRed"></icon>
                 </button>
               </div>
-              <div className="grid-container web-three mob-two mt-1">
+              <div className="grid-container web-three mob-one mt-1">
                 {videoData
                   .filter((video) => playlistItem.videos.includes(video.id))
                   .map((video) => {

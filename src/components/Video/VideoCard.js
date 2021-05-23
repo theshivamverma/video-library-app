@@ -34,7 +34,7 @@ export default function VideoCard({
       </div>
       <div className="video-details mt-1">
         <p class="medium font-size-xsm">{video.snippet.channelTitle}</p>
-        <p class="medium font-size-xsm">{video.statistics.viewCount}</p>
+        <p class="medium font-size-xsm">{video.statistics.viewCount} Views</p>
       </div>
     </div>
   );

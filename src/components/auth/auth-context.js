@@ -43,6 +43,7 @@ export function AuthProvider({ children }) {
 
   function userLogout() {
     setLogin(false);
+    setUser(null)
     localStorage.removeItem("vlib_login");
     localStorage.removeItem("vlib_user_id");
   }
