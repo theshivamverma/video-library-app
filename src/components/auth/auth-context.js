@@ -1,19 +1,27 @@
 import { useState, createContext, useContext, useEffect } from "react";
 import axios from "axios";
+import { setupAuthHeaderForServiceCalls } from "../auth"
 
 const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
-  const [login, setLogin] = useState(false);
+  const { isLoggedIn, token: storedToken } = JSON.parse(
+    localStorage?.getItem("vlib_login")
+  ) || { isLoggedIn: false, token: null };
+
+  const [login, setLogin] = useState(isLoggedIn);
+  const [token, setToken] = useState(storedToken)
   const [user, setUser] = useState(undefined);
 
+  token && setupAuthHeaderForServiceCalls(token)
+
   useEffect(() => {
-    if (localStorage.getItem("vlib_login")) {
-      setLogin(JSON.parse(localStorage.getItem("vlib_login")));
+    if (login && token) {
       setUserData();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [login , token]);
+
 
   async function setUserData() {
     try {
@@ -21,9 +29,7 @@ export function AuthProvider({ children }) {
         status,
         data: { user },
       } = await axios.get(
-        `${process.env.REACT_APP_API_BASE_URL}/user/${localStorage.getItem(
-          "vlib_user_id"
-        )}`
+        `${process.env.REACT_APP_API_BASE_URL}/user/userdetail`
       );
       if (status === 200) {
         setUser({ ...user });
@@ -33,62 +39,9 @@ export function AuthProvider({ children }) {
     }
   }
 
-  function setUserLogin(userId) {
-    setLogin(true);
-    localStorage.setItem("vlib_login", true);
-    localStorage.setItem("vlib_user_id", userId);
-    setUserData();
-    return {id: userId, success: true};
-  }
-
-  function userLogout() {
-    setLogin(false);
-    setUser(null)
-    localStorage.removeItem("vlib_login");
-    localStorage.removeItem("vlib_user_id");
-  }
-
-  async function loginUser(username, password) {
-    try {
-      const { status, data } = await axios.post(
-        `${process.env.REACT_APP_API_BASE_URL}/auth`,
-        {
-          username,
-          password,
-        }
-      );
-      if (status === 200) {
-        return setUserLogin(data.user[0]._id);
-      }
-    } catch (err) {
-      return {id: "", success: false};
-    }
-  }
-
-  async function registerUser(name, email, username, password) {
-    try {
-      const { status: userStatus, data: userData } = await axios.post(
-        `${process.env.REACT_APP_API_BASE_URL}/user`,
-        {
-          user: {
-            name,
-            username,
-            email,
-            password,
-          },
-        }
-      );
-      if (userStatus === 200) {
-        return setUserLogin(userData.savedUser._id)
-      }
-    } catch (error) {
-      return {id: "", success: false}
-    }
-  }
-
   return (
     <AuthContext.Provider
-      value={{ login, user, loginUser, registerUser, userLogout }}
+      value={{ login, user, token, setLogin, setToken }}
     >
       {children}
     </AuthContext.Provider>

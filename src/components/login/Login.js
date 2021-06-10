@@ -1,17 +1,17 @@
 import { useState } from "react"
 import { Link, useLocation, useNavigate } from "react-router-dom"
-import { useAuth } from "../auth"
+import { useAuth, loginUser } from "../auth"
 import { useToast } from "../utilities/Toast"
 import { usePlaylist } from "../playlist"
 
 export default function Login() {
-  const [userName, setUsername] = useState("")
+  const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
   const [errorUsername, setErrorUsername] = useState("")
   const [errorPassword, setErrorPassword] = useState("")
 
   const { setPlaylistsData } = usePlaylist()
-  const { login, loginUser, user } = useAuth();
+  const { login, setLogin, setToken } = useAuth();
   const { toastDispatch } = useToast();
 
   const { state } = useLocation();
@@ -21,7 +21,7 @@ export default function Login() {
   login && navigate(state?.from ? state.from : "/")
 
   function checkForUsername(){
-    if(userName !== ""){
+    if(username !== ""){
       setErrorUsername("")
     }else{
       setErrorUsername("username is required")
@@ -40,9 +40,12 @@ export default function Login() {
     checkForUsername()
     checkForPassword()
     if(errorPassword === "" && errorUsername === ""){
-      const { success } = await loginUser(userName, password);
+      const { success, token } = await loginUser(username, password);
+      console.log({ success, token })
       if (success) {
-        setPlaylistsData(user)
+        setLogin(true)
+        setToken(token)
+        setPlaylistsData()
         toastDispatch({ type: "SUCCESS_TOAST", payload: "Login successful" });
       } else {
         toastDispatch({ type: "ERROR_TOAST", payload: "Wrong credentials" });

@@ -1,9 +1,15 @@
 import { Link } from "react-router-dom";
-import { useAuth } from "../../auth"
+import { useAuth, logoutUser } from "../../auth"
 
 export default function Topnavbar({ setLeftMenu }) {
 
-  const { login,  userLogout } = useAuth()
+  const { login, setLogin, setToken } = useAuth()
+
+  function logoutHandler(){
+    logoutUser()
+    setLogin(false)
+    setToken(null)
+  }
 
   return (
     <nav className="nav top-fixed p-1 box-shadow-down">
@@ -26,7 +32,7 @@ export default function Topnavbar({ setLeftMenu }) {
         ) : (
           <div classname="">
             {/* <p className="medium font-size-sm">Hi {user && user.username} !</p> */}
-            <button className="btn btn-link" onClick={() => userLogout()}>
+            <button className="btn btn-link" onClick={() => logoutHandler()}>
               Logout
             </button>
           </div>

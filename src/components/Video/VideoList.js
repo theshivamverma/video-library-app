@@ -8,14 +8,14 @@ import Loader from "react-loader-spinner";
 
 export default function VideoList() {
   const { videoData } = useVideo();
-  const { user, login } = useAuth();
+  const { login, token } = useAuth();
   const { setPlaylistsData } = usePlaylist();
 
   useEffect(() => {
-    if (user && login) {
-      setPlaylistsData(user);
+    if (login && token) {
+      setPlaylistsData();
     }
-  }, [user, login]);
+  }, [login, token]);
 
   return (
     <>

@@ -21,14 +21,14 @@ export default function VideoPage() {
     addToWatchLater,
     removeFromWatchLater
   } = usePlaylist();
-  const { user, login } = useAuth();
+  const { login, token } = useAuth();
   const { toastDispatch } = useToast()
 
   useEffect(() => {
-    if (user && login) {
-      setPlaylistsData(user);
+    if (login && token) {
+      setPlaylistsData();
     }
-  }, [user, login]);
+  }, [login, token]);
 
   const [modalActive, setModalActive] = useState(false);
   const [createInput, setCreateInput] = useState(false);
@@ -49,10 +49,10 @@ export default function VideoPage() {
   function handleWatchLaterClick(){
     if(login){
       if (watchlater.includes(videoId)) {
-        removeFromWatchLater(videoId, user._id);
+        removeFromWatchLater(videoId);
         playlistDispatch({ type: "REMOVE_FROM_WATCH_LATER", payload: videoId });
       } else {
-        addToWatchLater(videoId, user._id);
+        addToWatchLater(videoId);
         playlistDispatch({ type: "ADD_TO_WATCH_LATER", payload: videoId });
       }
     }else{
@@ -150,7 +150,7 @@ export default function VideoPage() {
                 className="btn btn-col btn-outline btn-primary border-round"
                 onClick={() => {
                   setPlaylistName("");
-                  createPlaylist(user._id, playlistName);
+                  createPlaylist(playlistName);
                 }}
               >
                 Create

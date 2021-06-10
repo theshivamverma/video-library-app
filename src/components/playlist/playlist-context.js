@@ -15,25 +15,23 @@ export function PlaylistProvider({ children }) {
 
   useEffect(() => {}, []);
 
-  async function createPlaylist(userId, name) {
+  async function createPlaylist(name) {
     try {
       const { status: playlistStatus, data: playListData } = await axios.post(
         `${process.env.REACT_APP_API_BASE_URL}/playlist`,
         {
-          playlist: {
-            userId,
-            name,
-          },
+          name,
         }
       );
       if (playlistStatus === 200) {
         console.log(playListData.savedPlaylist);
-        const { status, data } = await axios.post(
-          `${process.env.REACT_APP_API_BASE_URL}/user/${userId}/add-new-playlist`,
-          {
-            playlistId: playListData.savedPlaylist._id,
-          }
-        );
+          const { status } = await axios.post(
+            `${process.env.REACT_APP_API_BASE_URL}/user/add-new-playlist`,
+            {
+              playlistId: playListData.savedPlaylist._id,
+            }
+          );
+        
         if (status === 200) {
           dispatch({
             type: "CREATE_NEW_PLAYLIST",
@@ -49,9 +47,10 @@ export function PlaylistProvider({ children }) {
     }
   }
 
-  async function setPlaylistsData(user){
+  async function setPlaylistsData(){
     try {
-      const { status, data } = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/user/${user._id}`)
+      const { status, data } = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/user/userdetail`)
+      console.log({data})
       if(status === 200){
         const loadData = data.user.playlists.map((playlist) => {
           return {
@@ -113,9 +112,9 @@ export function PlaylistProvider({ children }) {
     }
   }
 
-  async function addToWatchLater(videoId, userId){
+  async function addToWatchLater(videoId){
     try {
-      const { status, data } = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/user/${userId}/add-to-watch-later`, {
+      const { status, data } = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/user/add-to-watch-later`, {
         videoId
       })
       if(status === 200){
@@ -126,9 +125,9 @@ export function PlaylistProvider({ children }) {
     }
   }
 
-  async function removeFromWatchLater(videoId, userId){
+  async function removeFromWatchLater(videoId){
     try {
-      const { status, data } = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/user/${userId}/remove-from-watch-later`, {
+      const { status, data } = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/user/remove-from-watch-later`, {
         videoId
       })
       if(status === 200){

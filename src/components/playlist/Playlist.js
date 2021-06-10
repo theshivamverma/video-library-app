@@ -8,15 +8,15 @@ import { useAuth } from "../auth";
 
 export default function Playlist() {
   const { videoData } = useVideo();
-  const { login, user } = useAuth();
+  const { login, token } = useAuth();
   const { playlist, playlistDispatch, setPlaylistsData, deletePlaylist } =
     usePlaylist();
 
   useEffect(() => {
-    if (user && login) {
-      setPlaylistsData(user);
+    if (login && token) {
+      setPlaylistsData();
     }
-  }, [user, login]);
+  }, [token, login]);
 
   return (
     <div>

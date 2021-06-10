@@ -9,10 +9,8 @@ export default function PlaylistDetail(){
     const { playlist } = usePlaylist()
     const { videoData } = useVideo()
 
-    console.log(playlistId)
-    console.log(playlist)
     const displayPlaylist = playlist.find(playlistItem => playlistItem._id === playlistId)
-console.log(displayPlaylist)
+
     return (
       <div>
         <h1 className="medium font-size-l">

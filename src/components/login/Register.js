@@ -1,7 +1,7 @@
-import axios from "axios";
-import { useEffect, useState } from "react";
+
+import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useAuth } from "../auth";
+import { useAuth, signupUser } from "../auth";
 import { useToast } from "../utilities/Toast";
 import { usePlaylist } from "../playlist"
 import {
@@ -16,13 +16,13 @@ export default function Register() {
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [users, setUsers] = useState([]);
+ 
   const [errorUsername, setErrorUsername] = useState("");
   const [errorEmail, setErrorEmail] = useState("");
   const [errorName, setErrorName] = useState("");
   const [errorPassword, setErrorPassword] = useState("");
 
-  const { login, registerUser } = useAuth();
+  const { login, setLogin, setToken } = useAuth();
   const { toastDispatch } = useToast();
   const { createPlaylist } = usePlaylist()
 
@@ -30,80 +30,20 @@ export default function Register() {
 
   login && navigate("/");
 
-  useEffect(() => {
-    (async function () {
-      try {
-        const { status, data } = await axios.get(
-          `${process.env.REACT_APP_API_BASE_URL}/user`
-        );
-        if (status === 200) {
-          setUsers(data.usersData);
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    })();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  function checkForUsername() {
-    if (username !== "") {
-      if (validateUsername(username)) {
-        if (users.map((user) => user.username).includes(username)) {
-          setErrorUsername("Username already taken");
-        } else {
-          setErrorUsername("");
-        }
-      } else {
-        setErrorUsername("only letters and numbers allowed");
-      }
-    } else {
-      setErrorUsername("username is required");
-    }
+  async function checkForUsername() {
+    setErrorUsername(await validateUsername(username))
   }
 
-  function checkForEmail() {
-    if (email !== "") {
-      if (validateEmail(email)) {
-        if (users.map((user) => user.email).includes(email)) {
-          setErrorEmail("Email already exists");
-        } else {
-          setErrorEmail("");
-        }
-      } else {
-        setErrorEmail("Enter a valid email");
-      }
-    } else {
-      setErrorEmail("Email is required");
-    }
+  async function checkForEmail() {
+    setErrorEmail(await validateEmail(email))
   }
 
   function checkForName() {
-    if (name !== "") {
-      if (validateName(name)) {
-        setErrorName("");
-      } else {
-        setErrorName("Numbers not allowed for name");
-      }
-    } else {
-      setErrorName("Name is required");
-    }
+    setErrorName(validateName(name))
   }
 
   function checkForPassword() {
-    if (password !== "") {
-      if (password.length < 6) {
-        setErrorPassword("Password should be atleast 6 digits long");
-      } else {
-        if (validatePassword(password)) {
-          setErrorPassword("");
-        } else {
-          setErrorPassword("passowrd must contain a number");
-        }
-      }
-    } else {
-      setErrorPassword("Password is required");
-    }
+    setErrorPassword(validatePassword(password))
   }
 
   async function registerHandler() {
@@ -121,9 +61,12 @@ export default function Register() {
       password &&
       name
     ) {
-      const { id, success } = await registerUser(name, email, username, password);
+      const { token, success } = await signupUser(name, email, username, password);
       if (success) {
-        createPlaylist(id, "My playlist")
+        setLogin(true)
+        setToken(token)
+        createPlaylist("My playlist");
+        // addNewPlaylistToUser(playlistId)
         toastDispatch({ type: "SUCCESS_TOAST", payload: "Signup successfull" });
       } else {
         toastDispatch({ type: "ERROR_TOAST", payload: "Error signing up" });

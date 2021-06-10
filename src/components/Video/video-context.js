@@ -40,7 +40,11 @@ export function VideoProvider({ children }) {
       console.log(idString);
       const { status, data } = await axios.get(
         `https://youtube.googleapis.com/youtube/v3/videos?part=snippet%2CcontentDetails%2Cstatistics&id=${idString}&key=${process.env.REACT_APP_YOUTUBE_API_KEY}`
-      );
+      , {
+        headers: {
+          Authorization: ""
+        }
+      });
       if (status === 200) {
         setVideoData(data.items);
       }

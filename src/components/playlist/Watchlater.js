@@ -8,13 +8,13 @@ import { VideoCard, useVideo } from "../Video";
 export default function Watchlater() {
   const { videoData } = useVideo();
   const { watchlater, setPlaylistsData } = usePlaylist();
-  const { login, user } = useAuth();
+  const { login,token } = useAuth();
 
   useEffect(() => {
-    if (user && login) {
-      setPlaylistsData(user);
+    if (token && login) {
+      setPlaylistsData();
     }
-  }, [login, user]);
+  }, [login, token]);
 
   return (
     <div>
