@@ -5,6 +5,7 @@ import { usePlaylist } from "../playlist";
 import { VideoCard, useVideo } from "../Video";
 import { Link } from "react-router-dom";
 import { useAuth } from "../auth";
+import { useToast } from "../utilities/Toast";
 
 export default function Playlist() {
   const { videoData } = useVideo();
@@ -12,11 +13,26 @@ export default function Playlist() {
   const { playlist, playlistDispatch, setPlaylistsData, deletePlaylist } =
     usePlaylist();
 
+  const { callToast } = useToast()
+
   useEffect(() => {
     if (login && token) {
       setPlaylistsData();
     }
   }, [token, login]);
+
+  async function handlePlaylistDelete(playlistId) {
+    playlistDispatch({
+      type: "REMOVE_PLAYLIST",
+      payload: { playlistId },
+    });
+    const { success } = await deletePlaylist(playlistId);
+    if(success){
+      callToast("SUCCESS_TOAST", "Playlist deleted")
+    }else{
+      callToast("ERROR_TOAST", "Something went wrong!")
+    }
+  }
 
   return (
     <div>
@@ -36,13 +52,7 @@ export default function Playlist() {
                   style={{
                     display: `${index > 0 ? "initial" : "none"}`,
                   }}
-                  onClick={() => {
-                    deletePlaylist(playlistItem._id);
-                    playlistDispatch({
-                      type: "REMOVE_PLAYLIST",
-                      payload: { playlistId: playlistItem._id },
-                    });
-                  }}
+                  onClick={() => handlePlaylistDelete(playlistItem._id)}
                 >
                   <icon className="fas fa-trash icon-med colorAlertRed"></icon>
                 </button>

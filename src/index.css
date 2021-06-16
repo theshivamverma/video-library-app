@@ -54,6 +54,9 @@
   .video-card {
     width: 300px;
     height: initial !important;
+    display: flex;
+    flex-direction: column !important;
+    justify-content: space-between;
   }
 
   .ytp-cued-thumbnail-overlay {

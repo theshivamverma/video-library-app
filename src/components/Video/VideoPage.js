@@ -22,7 +22,7 @@ export default function VideoPage() {
     removeFromWatchLater
   } = usePlaylist();
   const { login, token } = useAuth();
-  const { toastDispatch } = useToast()
+  const { callToast } = useToast()
 
   useEffect(() => {
     if (login && token) {
@@ -34,29 +34,53 @@ export default function VideoPage() {
   const [createInput, setCreateInput] = useState(false);
   const [playlistName, setPlaylistName] = useState("");
 
-  function handleCheck(e) {
+  async function handleCheck(e) {
     if (e.target.checked) {
-      addVideoToPlaylist(videoId, e.target.value);
       playlistDispatch({
         type: "ADD_VIDEO_TO_PLAYLIST",
         payload: { playlistId: e.target.value, videoId },
       });
+      const { success } = await addVideoToPlaylist(videoId, e.target.value);
+      if (success) {
+        callToast("SUCCESS_TOAST", "Video added to playlist");
+      } else {
+        callToast("ERROR_TOAST", "Something went wrong !");
+      }
     } else {
-      removeVideoFromPlaylist(videoId, e.target.value);
+       playlistDispatch({
+         type: "REMOVE_VIDEO_FROM_PLAYLIST",
+         payload: { playlistId: e.target.value, videoId },
+       });
+       const { success } = await removeVideoFromPlaylist(videoId, e.target.value);
+        if (success) {
+          callToast("SUCCESS_TOAST", "Video removed from playlist");
+        } else {
+          callToast("ERROR_TOAST", "Something went wrong !");
+        }
     }
   }
 
-  function handleWatchLaterClick(){
+  async function handleWatchLaterClick(){
     if(login){
       if (watchlater.includes(videoId)) {
-        removeFromWatchLater(videoId);
-        playlistDispatch({ type: "REMOVE_FROM_WATCH_LATER", payload: videoId });
+        playlistDispatch({ type: "REMOVE_FROM_WATCH_LATER", payload: { videoId } });
+        const { success } = await removeFromWatchLater(videoId);
+        if(success){
+          callToast("SUCCESS_TOAST", "Video removed from watch later")
+        }else{
+          callToast("ERROR_TOAST", "Something went wrong !")
+        }
       } else {
-        addToWatchLater(videoId);
-        playlistDispatch({ type: "ADD_TO_WATCH_LATER", payload: videoId });
+        playlistDispatch({ type: "ADD_TO_WATCH_LATER", payload: { videoId } });
+        const { success } = await addToWatchLater(videoId);
+         if (success) {
+           callToast("SUCCESS_TOAST", "Video added to watch later");
+         } else {
+           callToast("ERROR_TOAST", "Something went wrong !");
+         }
       }
     }else{
-      toastDispatch({ type: "INFO_TOAST", payload: "You need to login first" });
+      callToast( "INFO_TOAST", "You need to login first" );
     }
   }
 

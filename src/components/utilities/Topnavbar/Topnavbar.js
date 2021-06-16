@@ -3,7 +3,7 @@ import { useAuth, logoutUser } from "../../auth"
 
 export default function Topnavbar({ setLeftMenu }) {
 
-  const { login, setLogin, setToken } = useAuth()
+  const { login, setLogin, setToken, user } = useAuth()
 
   function logoutHandler(){
     logoutUser()
@@ -30,8 +30,8 @@ export default function Topnavbar({ setLeftMenu }) {
             </Link>
           </>
         ) : (
-          <div classname="">
-            {/* <p className="medium font-size-sm">Hi {user && user.username} !</p> */}
+          <div classname="user-info">
+            <p className="medium font-size-sm">Hi {user && user.username} !</p>
             <button className="btn btn-link" onClick={() => logoutHandler()}>
               Logout
             </button>

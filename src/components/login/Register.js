@@ -23,7 +23,7 @@ export default function Register() {
   const [errorPassword, setErrorPassword] = useState("");
 
   const { login, setLogin, setToken } = useAuth();
-  const { toastDispatch } = useToast();
+  const { callToast } = useToast();
   const { createPlaylist } = usePlaylist()
 
   const navigate = useNavigate();
@@ -66,16 +66,12 @@ export default function Register() {
         setLogin(true)
         setToken(token)
         createPlaylist("My playlist");
-        // addNewPlaylistToUser(playlistId)
-        toastDispatch({ type: "SUCCESS_TOAST", payload: "Signup successfull" });
+        callToast("SUCCESS_TOAST","Signup successfull");
       } else {
-        toastDispatch({ type: "ERROR_TOAST", payload: "Error signing up" });
+        callToast("ERROR_TOAST","Error signing up");
       }
     } else {
-      toastDispatch({
-        type: "ERROR_TOAST",
-        payload: "Invalid credentials for signup",
-      });
+      callToast("ERROR_TOAST","Invalid credentials for signup");
     }
   }
 

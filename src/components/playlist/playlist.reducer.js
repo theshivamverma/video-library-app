@@ -1,16 +1,11 @@
 export default function playlistReducer(state, action) {
-    console.log(action)
   switch (action.type) {
-    case "LOAD_PLAYLIST_DATA":
+    case "LOAD_DATA":
       return {
         ...state,
-        playlist: action.payload,
+        playlist: action.payload.playlistData,
+        watchlater: action.payload.watchlaterData,
       };
-    case "LOAD_WATCH_LATER_DATA": 
-      return {
-        ...state,
-        watchlater: action.payload,
-      }
     case "CREATE_NEW_PLAYLIST":
       return {
         ...state,
@@ -49,18 +44,22 @@ export default function playlistReducer(state, action) {
     case "REMOVE_PLAYLIST":
       return {
         ...state,
-        playlist: state.playlist.filter((playlistItem) => playlistItem._id !== action.payload.playlistId),
+        playlist: state.playlist.filter(
+          (playlistItem) => playlistItem._id !== action.payload.playlistId
+        ),
       };
     case "ADD_TO_WATCH_LATER":
       return {
         ...state,
-        watchlater: state.watchlater.concat(action.payload)
-      }
+        watchlater: state.watchlater.concat(action.payload.videoId),
+      };
     case "REMOVE_FROM_WATCH_LATER":
       return {
         ...state,
-        watchlater: state.watchlater.filter(videoId => videoId !== action.payload)
-      }
+        watchlater: state.watchlater.filter(
+          (videoId) => videoId !== action.payload.videoId
+        ),
+      };
     default:
       return;
   }

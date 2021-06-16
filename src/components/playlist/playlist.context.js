@@ -59,8 +59,13 @@ export function PlaylistProvider({ children }) {
             _id: playlist._id,
           };
         });
-        dispatch({ type: "LOAD_PLAYLIST_DATA", payload: loadData });
-        dispatch({ type: "LOAD_WATCH_LATER_DATA", payload: data.user.watchlater })
+        dispatch({
+          type: "LOAD_DATA",
+          payload: {
+            playlistData: loadData,
+            watchlaterData: data.user.watchlater,
+          },
+        });
       }
     } catch (error) {
       console.log(error)
@@ -69,72 +74,85 @@ export function PlaylistProvider({ children }) {
 
   async function addVideoToPlaylist(videoId, playlistId){
     try {
-        const { status, data } = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/playlist/${playlistId}/add-video`, {
+        const { status } = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/playlist/${playlistId}/add-video`, {
             videoId
         })
         if(status === 200){
-            console.log(data)
-            // dispatch({ type: "ADD_VIDEO_TO_PLAYLIST", payload: { playlistId, videoId } })
+            return { success: true }
         }
     } catch (error) {
-        
+        console.log(error)
+        setPlaylistsData()
+        return { success: false }
     }
   }
 
   async function removeVideoFromPlaylist(videoId, playlistId){
        try {
-         const { status, data } = await axios.post(
+         const { status } = await axios.post(
            `${process.env.REACT_APP_API_BASE_URL}/playlist/${playlistId}/remove-video`,
            {
              videoId,
            }
          );
          if (status === 200) {
-             console.log(data)
-           dispatch({
-             type: "REMOVE_VIDEO_FROM_PLAYLIST",
-             payload: { playlistId, videoId },
-           });
+           return { success: true };
          }
        } catch (error) {
-         console.log(error)
+         console.log(error);
+         setPlaylistsData();
+         return { success: false };
        }
   }
 
   async function deletePlaylist(playlistId){
     try {
-      const { status, data } = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/playlist/${playlistId}/delete`)
-      if(status === 200){
-        console.log(data)
+      const { status } = await axios.post(
+        `${process.env.REACT_APP_API_BASE_URL}/playlist/${playlistId}/delete`
+      );
+      if (status === 200) {
+        return { success: true };
       }
     } catch (error) {
-      console.log(error)
+      console.log(error);
+      setPlaylistsData();
+      return { success: false };
     }
   }
 
   async function addToWatchLater(videoId){
     try {
-      const { status, data } = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/user/add-to-watch-later`, {
-        videoId
-      })
-      if(status === 200){
-        
+      const { status } = await axios.post(
+        `${process.env.REACT_APP_API_BASE_URL}/user/add-to-watch-later`,
+        {
+          videoId,
+        }
+      );
+      if (status === 200) {
+        return { success: true };
       }
     } catch (error) {
-      console.log(error)
+      console.log(error);
+      setPlaylistsData();
+      return { success: false };
     }
   }
 
   async function removeFromWatchLater(videoId){
     try {
-      const { status, data } = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/user/remove-from-watch-later`, {
-        videoId
-      })
-      if(status === 200){
-        
+      const { status } = await axios.post(
+        `${process.env.REACT_APP_API_BASE_URL}/user/remove-from-watch-later`,
+        {
+          videoId,
+        }
+      );
+      if (status === 200) {
+        return { success: true };
       }
     } catch (error) {
-      console.log(error)
+      console.log(error);
+      setPlaylistsData();
+      return { success: false };
     }
   }
 

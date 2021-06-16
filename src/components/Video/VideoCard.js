@@ -1,12 +1,30 @@
 import { Link } from "react-router-dom";
 import { usePlaylist } from "../playlist";
+import { useToast } from "../utilities/Toast";
 
 export default function VideoCard({
   video,
   playlistCard,
   playlistId
 }) {
-  const { removeVideoFromPlaylist } = usePlaylist();
+  const { removeVideoFromPlaylist, playlistDispatch } = usePlaylist();
+
+  const { callToast } = useToast()
+
+  async function handleDeleteVideo(videoId, playlistId){
+     playlistDispatch({
+       type: "REMOVE_VIDEO_FROM_PLAYLIST",
+       payload: { playlistId , videoId },
+     });
+
+     const { success } = await removeVideoFromPlaylist(videoId, playlistId)
+
+     if(success){
+       callToast("SUCCESS_TOAST", "Video removed from playlist")
+     }else{
+       callToast("ERROR_TEST", "Something went wrong!")
+     }
+  }
 
   return (
     <div className="box-shadow-down video-card p-1">
@@ -26,7 +44,7 @@ export default function VideoCard({
           className="btn btn-icon ml-1"
           style={{ display: `${playlistCard ? "initial" : "none"}` }}
           onClick={() =>
-            removeVideoFromPlaylist(video.id, playlistId)
+            handleDeleteVideo(video.id, playlistId)
           }
         >
           <icon className="fas fa-trash icon-med colorAlertRed"></icon>
@@ -34,7 +52,7 @@ export default function VideoCard({
       </div>
       <div className="video-details mt-1">
         <p class="medium font-size-xsm">{video.snippet.channelTitle}</p>
-        <p class="medium font-size-xsm">{video.statistics.viewCount} Views</p>
+        <p class="medium font-size-xsm mt-05">{video.statistics.viewCount} Views</p>
       </div>
     </div>
   );

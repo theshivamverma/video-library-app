@@ -12,7 +12,7 @@ export default function Login() {
 
   const { setPlaylistsData } = usePlaylist()
   const { login, setLogin, setToken } = useAuth();
-  const { toastDispatch } = useToast();
+  const { callToast } = useToast();
 
   const { state } = useLocation();
 
@@ -46,12 +46,12 @@ export default function Login() {
         setLogin(true)
         setToken(token)
         setPlaylistsData()
-        toastDispatch({ type: "SUCCESS_TOAST", payload: "Login successful" });
+        callToast("SUCCESS_TOAST","Login successful");
       } else {
-        toastDispatch({ type: "ERROR_TOAST", payload: "Wrong credentials" });
+        callToast("ERROR_TOAST", "Wrong credentials");
       }
     }else{
-        toastDispatch({ type: "ERROR_TOAST", payload: "Enter proper credentials" });
+        callToast( "ERROR_TOAST", "Enter proper credentials" );
     }
   }
 
