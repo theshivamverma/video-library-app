@@ -1,1 +1,99 @@
+.video-title {
+  font-size: 0.9rem !important;
+}
 
+.App {
+  padding: 0 0.5rem;
+  padding-top: 100px;
+  width: 100%;
+}
+
+.nav {
+  z-index: 9;
+}
+
+.player-wrapper {
+  position: relative;
+  padding-top: 56.25%;
+}
+
+.react-player {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.video-page-title {
+  font-size: 0.8rem;
+  width: 100%;
+  margin-bottom: 0.5rem;
+}
+
+.profile {
+  display: none !important;
+}
+
+.mobile-logoutbtn {
+  display: initial !important;
+}
+
+.loader{
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+@media (min-width: 768px) {
+  .App {
+    padding: 2rem;
+    padding-top: 80px;
+    padding-left: calc(20% + 2rem) !important;
+  }
+
+  .video-card {
+    width: 300px;
+    height: initial !important;
+    display: flex;
+    flex-direction: column !important;
+    justify-content: space-between;
+  }
+
+  .ytp-cued-thumbnail-overlay {
+    height: 60% !important;
+  }
+
+  .modal-container {
+    min-width: 20% !important;
+  }
+
+  .nav {
+    padding: 0 3rem;
+    z-index: 99;
+  }
+  .video-page-title {
+    font-size: 1rem;
+    width: 80%;
+  }
+
+  .leftfixed-nav {
+    padding-top: 90px;
+    width: 20%;
+  }
+
+  .top-element {
+    display: none !important;
+  }
+  .btn-menu {
+    display: none;
+  }
+  .login-container {
+    width: 35%;
+  }
+  .profile {
+    display: initial !important;
+  }
+  .mobile-logoutbtn {
+    display: none !important;
+  }
+}
